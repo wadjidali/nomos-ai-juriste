@@ -1,3 +1,4 @@
+import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 import Sidebar from "../components/Sidebar";
 import ChatAssistant from "../components/ChatAssistant";
@@ -13,23 +14,23 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="fr">
-      <body className="antialiased text-slate-900">
-        <div className="flex h-screen bg-gray-50">
-          {/* Barre latérale fixe à gauche */}
-          <Sidebar />
+    <ClerkProvider>
+      <html lang="fr">
+        <body className="antialiased text-slate-900 overflow-x-hidden bg-gray-50">
+          <div className="flex flex-col md:flex-row min-h-screen">
+            <Sidebar />
 
-          {/* Zone de contenu principal qui défile */}
-          <main className="flex-1 overflow-y-auto p-8 lg:p-12">
-            {children}
-          </main>
-        </div>
+            {/* mt-16 pour laisser la place à la navbar mobile de la Sidebar */}
+            <main className="flex-1 p-4 md:p-8 lg:p-12 w-full mt-16 md:mt-0">
+              <div className="max-w-6xl mx-auto">
+                 {children}
+              </div>
+            </main>
+          </div>
 
-        {/* Le Copilot Flottant est placé ici pour être 
-            accessible sur toutes les pages du projet.
-        */}
-        <ChatAssistant />
-      </body>
-    </html>
+          <ChatAssistant />
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
